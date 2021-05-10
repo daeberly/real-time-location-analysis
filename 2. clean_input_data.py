@@ -248,9 +248,6 @@ for col in col_name:
 # Convert units
 data['wind_spd'] = round(data['wind_spd'] * 1.68781,2)  # convert units: 1 knot = 1.68781 ft/sec
 
-# Set index
-data = data.set_index(['station_id', 'timestamp'])
-
 #%%
 
 #
@@ -261,8 +258,8 @@ data = data.set_index(['station_id', 'timestamp'])
 data = geopandas.GeoDataFrame(data,geometry=geopandas.points_from_xy(data.longitude, data.latitude))
 data = data.set_crs(epsg = 3857) # inplace=True?
     # was MISSING this set_crs step
-data.crs
-data.plot()
+
+print("\n Exporting 'wx_data':", data.crs)
 
 # Export
 data.to_file('splash_down.gpkg', layer='wx_data', driver='GPKG')

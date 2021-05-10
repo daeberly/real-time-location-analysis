@@ -9,9 +9,7 @@
         # A 10% sample is used in this case study for proof of concept
 
 ## User-input:
-    # Folder where to save cleaned data
-        # data_clean/csv
-        # data_clean/spec
+    # Landing sites as .csv 
     # Files of interest (i.e. .txt, .spec)
 
 ## Outputs:
@@ -21,10 +19,7 @@
         'buoy_selection_rings',    # Buffer rings around NASA sites
         'nearby_wx_stations'       # buoys w/in the buffer rings
         
-    # 'cleaned_wx_data.csv'     # 10% sample version
-    # 'cleaned_wx_data.pkl.zip' # 10% sample version
-
-## Next .py is 'landing_sites.py'
+## Next .py is 'Evaluation.py'
 
  To fix:
     - Select weather reporting sites w/in 100nm of splashdown sites 
@@ -37,6 +32,7 @@
     # To add, (1) Open Anacoda Command Window, (2) enter commands below
     # `conda install contextily -c conda-forge`
     
+import pandas as pd
 import geopandas
 import fiona                # driver to read .kml format
 import matplotlib.pyplot as plt
@@ -98,13 +94,13 @@ sites.to_file('splash_down.gpkg', layer='NASA_sites', driver='GPKG')
 
 #%%
 #
-# Create 150nm site buffer, buoy selection
+# Create site buffer, buoy selection
 #
 
 ''' fix units'''
 
 
-# Buffer: 150 nautical miles = 277800 meters (crs)
+# Buffer: 2 degrees = 120 nautical miles (crs)
 sites.crs
 site_buffers = sites.buffer( 2 ) 
 site_buffers.crs
@@ -122,7 +118,7 @@ sites.plot(ax=ax1, edgecolors='red')
 ctx.add_basemap(ax=ax1, source=ctx.providers.Esri.OceanBasemap, zoom=10)
 
 ## Annotate Figure
-plt.title('NASA/SpaceX Splashdown Sites, 150nm buffer')
+plt.title('NASA/SpaceX Splashdown Sites, buffer')
 for x, y, label in zip(sites.geometry.x, sites.geometry.y, sites.index):
     ax1.annotate(label, xy=(x, y), xytext=(3, 3), textcoords="offset points")    
 fig.savefig('CHECK_buoy_selection_rings.svg', format='svg')
@@ -136,7 +132,7 @@ site_buffers.to_file('splash_down.gpkg', layer='buoy_selection_rings', driver='G
 #%%
 
 #
-# Select NOAA buoys within 150nm of sites
+# Select NOAA buoys within buffers
 #
 
 # Import buoys from geopackage.
@@ -155,22 +151,28 @@ site_buffers = site_buffers.to_crs(epsg=3857)
 
 # CHECK: plot both together
 fig,ax1 = plt.subplots(dpi=300, figsize=(12,12))
+plt.title('All NOAA Buoys & NASA Site range rings (red)')
 points.plot(ax=ax1, facecolor='none', edgecolors= 'black', markersize=5)
 site_buffers.plot(ax=ax1, alpha= 0.2, facecolor='red', edgecolors= 'none', markersize=50 )
 fig.savefig('CHECK_buoys_&_selection_rings.svg', format='svg')
 
 #%%
+#
 # Select buoys within buffers
+#
 
 in_buffer = geopandas.overlay(site_buffers, points, how='intersection', keep_geom_type=False)
    # Ref: https://geopandas.org/docs/user_guide/set_operations.html
    
 # CHECK: selection & buffers plot both together
 fig,ax1 = plt.subplots(dpi=300, figsize=(12,12))
+plt.title('NOAA Buoys in NASA Site range rings (red)')
 in_buffer.plot(ax=ax1, facecolor='none', edgecolors= 'black', markersize=5)
 site_buffers.plot(ax=ax1, alpha= 0.2, facecolor='red', edgecolors= 'none', markersize=50 )
-fig.savefig('buoys_inBuffer.svg', format='svg')
+fig.savefig('CHECK_buoys_inBuffer.svg', format='svg')
 
 # Export: add new layer to geopackage 
-site_buffers.to_file('splash_down.gpkg', layer='nearby_wx_stations', driver='GPKG')
+in_buffer.to_file('splash_down.gpkg', layer='nearby_wx_stations', driver='GPKG')
+in_buffer.columns
 
+print('\n .py Complete')
