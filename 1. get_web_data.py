@@ -4,7 +4,7 @@
     # 1. Download real-time data files - 10 min reporting interval last 72 hrs
     # 2. Save to folder for processing 
 
-## Next .py is 'clean_input_data.py' (module: glob)
+## Next .py is 'clean_input_data.py'
 
 ## User-input:
     # Supply url
@@ -19,7 +19,7 @@ import glob
 import os
 import csv
 
-
+#%%
 ##
 ##  Part 1. Get create from web a master list of 'current' weather stations
 ##
@@ -35,6 +35,8 @@ filename = 'latest_obs.txt'
 fh = open(filename, 'wb')
 fh.write(data)
 fh.close()
+
+#%%
 
 #
 # Create master list for wget to download currently reporting stations

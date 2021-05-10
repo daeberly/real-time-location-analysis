@@ -15,7 +15,7 @@
 
 ## Outputs:
     # CHECK_buoy_all.svg to verify active reporting wx stations on map
-    # splashdown.gpkg with layers 'buoys_all' & 'wx_data'
+    # splash_down.gpkg with layers 'buoys_all' & 'wx_data'
     # 'cleaned_wx_data.csv'     # 10% sample version
     # 'cleaned_wx_data.pkl.zip' # 10% sample version
 
@@ -161,7 +161,7 @@ spec_data = spec_data.sample(frac=.1)
 
 #%%
 #
-# 2. Merge datasets, attach lat/long & export
+# 2.a Create master buoy layer with lat/long 
 #
 
 ## Master list of buoys with lat/long
@@ -170,20 +170,30 @@ buoys_raw = buoys_raw.rename(mydict, axis='columns')
 buoys_all = buoys_raw[['station_id','latitude','longitude']]
 
 # Convert DataFrame to GeoDataFrame
-buoys_all = geopandas.GeoDataFrame(buoys_all,
-                                   geometry=geopandas.points_from_xy(buoys_all.longitude,
-                                                                     buoys_all.latitude))
+buoys_all = geopandas.GeoDataFrame(buoys_all, geometry=geopandas.points_from_xy(buoys_all.longitude,buoys_all.latitude))
+buoys_all = buoys_all.set_crs(epsg=3857, inplace= True)     
+    # not having inplace= True killed me for hours! haha.
+buoys_all.crs
 
-# Export layer to geopackage 
-buoys_all.to_file('splashdown.gpkg', layer='buoys_all', driver='GPKG')
- 
+''' 
+buoys_all does not project the same as sites, buffers or wx_data
+'''
 # CHECK. Plot buoy locations
 fig,ax1 = plt.subplots(dpi=300, figsize=(12,12))
-buoys_all = buoys_all.set_crs(epsg=3857)
 print('\n buoys_all.crs: ', buoys_all.crs)
 buoys_all.plot(ax=ax1, edgecolors= 'black')
 plt.title('All NOAA Buoys')
 fig.savefig('CHECK_buoy_all.svg', format='svg')
+
+
+# Export layer to geopackage 
+buoys_all.to_file('splash_down.gpkg', layer='buoys_all', driver='GPKG')
+
+#%%
+
+#
+# 2.b Merge datasets, attach lat/long & export
+#
 
 # Ensure merge column data types are the same
 print('\nbuoy_data:\n', buoy_data.dtypes)
@@ -227,7 +237,7 @@ data = data.rename( fix_names, axis='columns' )
 
 # Replace missing data with None
 data = data.replace(to_replace= 'MM' ,value= np.nan)# MM = missing measurement
-#data = data.fillna(0)                           # remove NaN..actually keep nan
+#data = data.fillna(0)
 
 # Ensure data types are correct for rasterizing
 col_name = ['wind_spd','wind_gust', 'swell_height', 'swell_period', 'wind_wave_height', 'ave_period']
@@ -239,7 +249,7 @@ for col in col_name:
 data['wind_spd'] = round(data['wind_spd'] * 1.68781,2)  # convert units: 1 knot = 1.68781 ft/sec
 
 # Set index
-data = data.set_index('station_id')
+data = data.set_index(['station_id', 'timestamp'])
 
 #%%
 
@@ -249,13 +259,14 @@ data = data.set_index('station_id')
 
 # Convert to GeoDataFrame 
 data = geopandas.GeoDataFrame(data,geometry=geopandas.points_from_xy(data.longitude, data.latitude))
+data = data.set_crs(epsg = 3857) # inplace=True?
+    # was MISSING this set_crs step
+data.crs
+data.plot()
 
 # Export
-data.to_file('splashdown.gpkg', layer='wx_data', driver='GPKG')
-data.to_csv('cleaned_wx_data.csv', index=False)
+data.to_file('splash_down.gpkg', layer='wx_data', driver='GPKG')
 data.to_pickle('cleaned_wx_data.pkl.zip')   #.zip auto compresses
 
 print('\n Total:', len(data), 'records in file.')
 print('\n Column names:', list(data.columns))
-
-sample2 = pd.read_pickle('cleaned_wx_data.pkl.zip')
