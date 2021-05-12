@@ -56,27 +56,32 @@ The code pulls real-time and historical data from the active NOAA weather statio
 
 ### Data Processing 
 - Download data from web [1. get_web_data.py]
-
 - Combine data into dataframe [2. clean_input_data.py]
+
+This is the workhorse of the program. Without clean, accurate and relevant data this program is useless. Python coding allows us to ensure credibility and trust in the data acquisition and manipulation. 
+
+![](https://github.com/daeberly/real-time-location-analysis/blob/main/Outputs/overall_flow.jpg)
+*Figure 1. Overall process with emphasis on the data acquisition and manipulation.*
+
 
 ### Geospatial Analysis
 - Find NOAA stations within range of sites [3. landing_site_data.py]
 - Plot data & map USCG force laydown relative to sites [4. site_evaluation.py]
 
-Here, we apply a 120nm buffer around splashdown sites to select nearby NOAA reporting stations (Figure 1.).
+Here, we apply a 120nm buffer around splashdown sites to select nearby NOAA reporting stations (Figure 2.).
 ![](https://github.com/daeberly/real-time-location-analysis/blob/main/Outputs/3c_CHECK_buoys_%26_selection_rings.svg)
-*Figure 1. NOAA weather reporting stations near Space X Splashdown Sites.*
+*Figure 2. NOAA weather reporting stations near Space X Splashdown Sites.*
 
-Once NOAA stations are identified, they are georeferenced, and plotted the results against the weather criteria. As a proof of concept, we only look at current wind speed and wave height as well as changes over time per station (Figure 2.)
+Once NOAA stations are identified, they are georeferenced, and plotted the results against the weather criteria. As a proof of concept, we only look at current wind speed and wave height as well as changes over time per station (Figure 3)
 ![](https://github.com/daeberly/real-time-location-analysis/blob/main/Outputs/4b_wind_byLocation_violinplot.png)
-*Figure 2. Wind speed distributions within 120nm of each site.*
+*Figure 3. Wind speed distributions within 120nm of each site.*
 
-The U.S. Coast Guard is charged with protecting the capsule upon arrival, establishing a security boundary and providing search and rescue. With each site around 12nm from shore this poses a capacity and capabilities challenge. For the U.S.Coast Guard, nearby small boat station one-hour transit ranges are plotted against splashdown sites and the U.S. 12nm territorial sea boundary (Figure 3). Only within the territorial seas is the U.S., by regulation the U.S.Coast Guard, authorize to establish and maintain a security boundary. Outside of 12nm, U.S. sovereignty ends and under the United Nations Commission on the Law of the Sea (UNCLOS) with respect to security zones.
+The U.S. Coast Guard is charged with protecting the capsule upon arrival, establishing a security boundary and providing search and rescue. With each site around 12nm from shore this poses a capacity and capabilities challenge. For the U.S.Coast Guard, nearby small boat station one-hour transit ranges are plotted against splashdown sites and the U.S. 12nm territorial sea boundary (Figure 4). Only within the territorial seas is the U.S., by regulation the U.S.Coast Guard, authorize to establish and maintain a security boundary. Outside of 12nm, U.S. sovereignty ends and under the United Nations Commission on the Law of the Sea (UNCLOS) with respect to security zones.
 
 It is important to note, all splashdown sites are within a one-hour transit of USCG small boat stations and outside the 12nm territorial sea boundary. 
 
 ![](https://github.com/daeberly/real-time-location-analysis/blob/main/Outputs/4g_SpaceXsites_vs-USCG.svg)
-*Figure 3. Space X Splashdown Sites within 1-hour range of USCG small boat stations.*
+*Figure 4. Space X Splashdown Sites within 1-hour range of USCG small boat stations.*
 
 ### Findings
 1. Coding is challenging, but rewarding to learn new programming tools, methods and capabilities. With over 1.6 million weather observations over 72 hours from NOAA, on May 10, 2021, 5 of 7 locations met the 15 ft/sec (10.2 mph) wind limitation. Running the program two days later (May 12, 2021), all stations were under the wind limitation except Tampa, FL previous within limits. This shows time-sensitive decisions, if available, require time enabled (near-real time) data to support decision makers.
