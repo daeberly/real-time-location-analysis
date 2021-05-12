@@ -1,6 +1,10 @@
-# Location Analysis: Using Real-Time NOAA data 
+# Location Analysis: Using non-API Real-Time NOAA data 
 ### Case Study. Identify the most suitable NASA/SpaceX Dragon Splashdown Sites
 ![](https://github.com/daeberly/real-time-location-analysis/blob/main/end_product.jpg)
+
+Link to presentation: https://github.com/daeberly/real-time-location-analysis/blob/main/Outputs/In-Class%20Presentation.pptx
+
+#### A special thanks to: Professor Peter Wilcoxen at Syracuse University for assistance in development of this PAI 789 Advanced Policy Analysis capstone project.
 
 ## Purpose.
 This project provides a hands-off repeated, auditable, and accurate framework to pull large volumes of web data, batch process and manipulate it before analysis. No external programs (QGIS or ArcGIS) are used for analysis or plotting; only python coding, associated modules and embedded methods. Only three user inputs are required, after that it can rerun the analysis repeated with no interaction by the user. 
@@ -41,14 +45,25 @@ Here, we determine NASA/SpaceX splashdown site viability with 10 minute weather 
 1. Weather criteria
 1. U.S. Coast Guard units with latitude, longitude and asset transit speed.
 
-### Overall Flow.
+### Overall Flow. Parts...
 1. Download data from web [1. get_web_data.py]
 1. Combine data into dataframe [2. clean_input_data.py]
 1. Find NOAA stations within range of sites [3. landing_site_data.py]
 1. Plot data & map USCG force laydown relative to sites [4. site_evaluation.py]
 
 ## Processing and Location Analysis
-The code pulls real-time and historical data from the active NOAA weather stations world-wide(total 801), batch processes two data files (.txt and .spec) per station (1.6 million records) from an input folder and plot splashdown sites. Here, we apply a 120nm buffer around splashdown sites to select nearby NOAA reporting stations (Figure 1.).
+The code pulls real-time and historical data from the active NOAA weather stations world-wide(total 801), batch processes two data files (.txt and .spec) per station (1.6 million records) from an input folder and plot splashdown sites. 
+
+### Data Processing 
+- Download data from web [1. get_web_data.py]
+
+- Combine data into dataframe [2. clean_input_data.py]
+
+### Geospatial Analysis
+- Find NOAA stations within range of sites [3. landing_site_data.py]
+- Plot data & map USCG force laydown relative to sites [4. site_evaluation.py]
+
+Here, we apply a 120nm buffer around splashdown sites to select nearby NOAA reporting stations (Figure 1.).
 ![](https://github.com/daeberly/real-time-location-analysis/blob/main/Outputs/3c_CHECK_buoys_%26_selection_rings.svg)
 *Figure 1. NOAA weather reporting stations near Space X Splashdown Sites.*
 
@@ -64,15 +79,18 @@ It is important to note, all splashdown sites are within a one-hour transit of U
 *Figure 3. Space X Splashdown Sites within 1-hour range of USCG small boat stations.*
 
 ### Findings
-1. Coding is fun and rewarding, but challenging at times. With over 1.6 million weather observations from NOAA, 5 of 7 locations were under the 15 ft/sec (10.2 mph) wind limitation. Running the program two days later, all stations were under the wind limitation except Tampa, FL previous within limits. This shows time-sensitive decisions, if available, require time enabled (near-real time) data to support decision makers.
+1. Coding is challenging, but rewarding to learn new programming tools, methods and capabilities. With over 1.6 million weather observations over 72 hours from NOAA, on May 10, 2021, 5 of 7 locations met the 15 ft/sec (10.2 mph) wind limitation. Running the program two days later (May 12, 2021), all stations were under the wind limitation except Tampa, FL previous within limits. This shows time-sensitive decisions, if available, require time enabled (near-real time) data to support decision makers.
 
-2. This coding framework and it's subparts are applicable in all disciplines. For example, in time of COVID-19, it could access all vaccine or test location appointments, consolidate them and display the closest. 
+#### Other real world practical applications.
+2. This coding framework and it's subparts are applicable in all disciplines. In times of COVID-19, it could access all vaccine or test location appointments, consolidate them and display the closest (parts 1-4). Another application applies to batch processing standard reports on a recurring basis and produce a reliable and audiable product (part 2),
 
 ### Data Sources.
-- NASA/SpaceX Splashdown Sites & Weather Criteria. https://www.nasa.gov/sites/default/files/atoms/files/ccp_splashdown.pdf
-- U.S. Coast Guard station & asset info. Compiled by me & included in the public GitHub "Inputs" folder.
-- U.S. States geodatabase. Census at https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
-- Territorial Sea shapefile. Esri at https://hub.arcgis.com/datasets/44f58c599b1e4f7192df9d4d10b7ddcf_1?geometry=-161.895%2C-12.805%2C161.895%2C73.355
+- [NOAA National Data Buoy Center - latest & historical weather reports.](https://www.ndbc.noaa.gov/data/latest_obs/)
+- [NASA/SpaceX Splashdown Sites & Weather Criteria (NOAA).](https://www.nasa.gov/sites/default/files/atoms/files/ccp_splashdown.pdf)
+    - Approximate site locations estimated by me with .csv location in respository "Inputs" folder.
+- U.S. Coast Guard station & asset info. Compiled by me & included in the repository "Inputs" folder.
+- [U.S. States geodatabase (Census)](https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html)
+- [Territorial Sea shapefile (Esri)](https://hub.arcgis.com/datasets/44f58c599b1e4f7192df9d4d10b7ddcf_1?geometry=-161.895%2C-12.805%2C161.895%2C73.355)
 
 ### Original Goal.
 #### Project feel short of the raster rendering and point extraction.
