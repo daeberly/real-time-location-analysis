@@ -31,7 +31,6 @@
 import pandas as pd
 import geopandas
 import matplotlib.pyplot as plt
-import contextily as ctx    # basemape for figure plots
 
 #%%
 #
@@ -129,7 +128,7 @@ plt.title('NASA/SpaceX Splashdown Sites, buffer')
 for x, y, label in zip(sites.geometry.x, sites.geometry.y, sites.index):
     ax1.annotate(label, xy=(x, y), xytext=(3, 3), textcoords="offset points")    
 
-fig.savefig('3b_CHECK_buoy_selection_rings.svg', format='svg')
+fig.savefig('3b_CHECK_buoy_selection_rings.png', format='png')
 
 ## CHECK End
 
@@ -181,7 +180,7 @@ plt.title('NASA/SpaceX Splashdown Sites, buffer')
 for x, y, label in zip(sites.geometry.x, sites.geometry.y, sites.index):
     ax1.annotate(label, xy=(x, y), xytext=(3, 3), textcoords="offset points")    
     
-fig.savefig('3c_CHECK_buoys_&_selection_rings.svg', format='svg')
+fig.savefig('3c_CHECK_buoys_&_selection_rings.png', format='png')
 
 ## CHECK End
 #

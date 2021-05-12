@@ -163,7 +163,7 @@ ax1.axhline(15)
 ax1 = by_time.groupby('Name')['wind_bin'].plot(legend=True)
 plt.legend(loc='upper left', prop={'size':6})
 fig.tight_layout()
-fig.savefig("4d_timeseries_wind_byLocation.svg", format='svg',dpi=300)
+fig.savefig("4d_timeseries_wind_byLocation.png", format='png',dpi=300)
 
 #Sample #1
 
@@ -179,7 +179,7 @@ ax1.axhline(15)
 ax1 = by_time.groupby('Name')['wind_bin'].plot(legend='left')
 plt.legend(loc='upper left', prop={'size':6})
 fig.tight_layout()
-fig.savefig("4e_timeseries_wind_byLocation.svg", format='svg',dpi=300)
+fig.savefig("4e_timeseries_wind_byLocation.png", format='png',dpi=300)
 
 ## Sample #2
 
@@ -195,7 +195,7 @@ ax1.axhline(15)
 ax1 = by_time.groupby('Name')['wind_bin'].plot(legend=True)
 plt.legend(loc='upper left', prop={'size':6})
 fig.tight_layout()
-fig.savefig("4f_timeseries_wind_byLocation.svg", format='svg',dpi=300)
+fig.savefig("4f_timeseries_wind_byLocation.png", format='png',dpi=300)
 
 
 
@@ -308,5 +308,5 @@ for x, y, label in zip(CG_units.geometry.x, CG_units.geometry.y, CG_units.index)
     ax1.annotate(label, xy=(x, y), xytext=(1, 1), textcoords="offset points", size= 5)
 
 # Export 
-fig.savefig('4g_SpaceXsites_vs-USCG.svg', format='svg')
+fig.savefig('4g_SpaceXsites_vs-USCG.png', format='png')
 CG_units.to_file('splash_down.gpkg', layer='CG_units', driver='GPKG')
