@@ -10,14 +10,15 @@ The U.S. Coast Guard is charged with protecting capsule upon arrival, establishi
 
 The code pulls real-time and historical data from the NOAA, batch processes it from an input folder and maps splashdown sites, NOAA reporting stations within 120nm then plots the results against the wind criteria. As well, CG units are mapped with their one-hour transit range and the 12nm territorial sea boundary. Both are combined in QGIS to overlay the results.
 
-## Findings
-Coding is fun and rewarding, but challenging at times. With over 1.6 million weather observations from NOAA, 5 of 7 locations were under the 15 ft/sec (10.2 mph) wind limitation. Running the program two days later, all stations were under the wind limitation. This shows time-sensitive decision require time enabled (near-real time) data to support decision makers.
+ QGIS and ArcGIS were not used. All mapping & selections were completed with python modules & coding requiring no outside software knowledge or usage.
 
-QGIS and ArcGIS were not used. All mapping & selections completed with python modules & coding. 
+## Findings
+1. Coding is fun and rewarding, but challenging at times. With over 1.6 million weather observations from NOAA, 5 of 7 locations were under the 15 ft/sec (10.2 mph) wind limitation. Running the program two days later, all stations were under the wind limitation except Tampa, FL previous within limits. This shows time-sensitive decisions, if available, require time enabled (near-real time) data to support decision makers.
+
+2. This coding framework and it's subparts are applicable in all disciplines. For example, in time of COVID-19, it could access all vaccine or test location appointments, consolidate them and display the closest. 
 
 ## Data Sources.
-- NASA/SpaceX Splashdown Sites & Weather Criteria. 
-    - url: https://www.nasa.gov/sites/default/files/atoms/files/ccp_splashdown.pdf
+- NASA/SpaceX Splashdown Sites & Weather Criteria. https://www.nasa.gov/sites/default/files/atoms/files/ccp_splashdown.pdf
 - U.S. Coast Guard station & asset info. Compiled by me & included in the public GitHub "Inputs" folder.
 - U.S. States geodatabase. Census at https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
 - Territorial Sea shapefile. Esri at https://hub.arcgis.com/datasets/44f58c599b1e4f7192df9d4d10b7ddcf_1?geometry=-161.895%2C-12.805%2C161.895%2C73.355
@@ -72,4 +73,4 @@ This case study identifies which NASA/SpaceX Dragon recovery sites meet their wi
 1. Plot results based on decision criteria
 1. Create raster image from lat/long values (*attempted*)
 1. Extract values for different lat/long (*attempted*)
-1. Plot, model & forecast (*partially completed*")
+1. Plot, model & forecast (*partially completed*)
