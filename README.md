@@ -1,7 +1,8 @@
-# real-time-location-analysis
-Identify best NASA/SpaceX Dragon Splashdown Site
+! [] (https://github.com/daeberly/real-time-location-analysis/blob/main/end_product.jpg)
 
-## Purpose.
+# Location Analysis: Using Real-Time NOAA data
+
+### Purpose.
 The purpose of this project is to create a hands-off repeated, auditable, and accurate framework. In this case, it helps determine NASA/SpaceX splashdown site viability with continuous weather updates that occur every 10 minutes. As well, it can be used to help aid U.S. Coast Guard command centers identify the best unit to respond, as the USCG is charged with protecting the public, NASA's astronauts and its high-valued capsule.
 
 SpaceX, contracted with NASA, used seven 'splashdown' sites in Southeast U.S. to recover the manned Dragon capsules. Each site is re-evaluated multiple times prior to landing, with the last decision gate at 1 hour and 20 minutes.
