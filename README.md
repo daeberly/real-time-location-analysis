@@ -1,5 +1,5 @@
 # Location Analysis: Using Real-Time NOAA data 
-### Identifying most suitable NASA/SpaceX Dragon Splashdown Sites
+### Case Study. Identify the most suitable NASA/SpaceX Dragon Splashdown Sites
 ![](https://github.com/daeberly/real-time-location-analysis/blob/main/end_product.jpg)
 
 ## Purpose.
