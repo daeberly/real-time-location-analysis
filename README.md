@@ -2,44 +2,57 @@
 Identify best NASA/SpaceX Dragon Splashdown Site
 
 ## Purpose.
-The code pulls real-time and historical data from the web, batch processes it from an input folder, maps it (lat/long), attempts to estimate it's weather, then outputs the results.
+The purpose of this project is to create a hands-off repeated, auditable, and accurate framework. In this case, it helps determine NASA/SpaceX splashdown site viability with continuous weather updates that occur every 10 minutes. As well, it can be used to help aid U.S. Coast Guard command centers identify the best unit to respond, as the USCG is charged with protecting the public, NASA's astronauts and its high-valued capsule.
 
-## Application.
+SpaceX, contracted with NASA, used seven 'splashdown' sites in Southeast U.S. to recover the manned Dragon capsules. Each site is re-evaluated multiple times prior to landing, with the last decision gate at 1 hour and 20 minutes.
+
+The U.S. Coast Guard is charged with protecting capsule upon arrival, establishing a security boundary and providing search and rescue. With each site around 12nm from shore this poses a capacity and capabilities challenge.
+
+The code pulls real-time and historical data from the NOAA, batch processes it from an input folder and maps splashdown sites, NOAA reporting stations within 120nm then plots the results against the wind criteria. As well, CG units are mapped with their one-hour transit range and the 12nm territorial sea boundary. Both are combined in QGIS to overlay the results.
+
+## Findings
+Coding is fun and rewarding, but challenging at times. With over 1.6 million weather observations from NOAA, 5 of 7 locations were under the 15 ft/sec (10.2 mph) wind limitation. Running the program two days later, all stations were under the wind limitation. This shows time-sensitive decision require time enabled (near-real time) data to support decision makers.
+
+QGIS and ArcGIS were not used. All mapping & selections completed with python modules & coding. 
+
+## Data Sources.
+- NASA/SpaceX Splashdown Sites & Weather Criteria. 
+    - url: https://www.nasa.gov/sites/default/files/atoms/files/ccp_splashdown.pdf
+- U.S. Coast Guard station & asset info. Compiled by me & included in the public GitHub "Inputs" folder.
+- U.S. States geodatabase. Census at https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
+- Territorial Sea shapefile. Esri at https://hub.arcgis.com/datasets/44f58c599b1e4f7192df9d4d10b7ddcf_1?geometry=-161.895%2C-12.805%2C161.895%2C73.355
+
+## Original Goal.
+### Project feel short of the raster rendering and point extraction.
 This case study identifies which NASA/SpaceX Dragon recovery sites meet their wind and wave height requirements. It pulls NOAA buoy .txt files, batch processes the data to create a visual timeseries. The timeseries is used to forecasting sea surface wave heights. Since the NASA/SpaceX recovery sites are not co-located at buoy sites, a buoy data is interpolated to create a raster, then lat/long point estimates are extracted from the raster for site conditions.
 
-QGIS and ArcGIS were not used. All mapping & selections are down with python modules & coding.
-
 ### User-defined inputs.
-Only two user inputs
-1. Site lat/long
-1. Radius from site for selecting NOAA reporting stations
-1. weather criteria
+1. SpaceX splashdown site with latitude & longitude.
+1. URL for NOAA weather reports
+1. Desired radius (120nm) from each site for selecting NOAA reporting stations
+1. Weather criteria
+1. U.S. Coast Guard units with latitude, longitude and asset transit speed.
 
 ## Overall Flow.
 1. Download data from web [1. get_web_data.py]
 1. Combine data into dataframe [2. clean_input_data.py]
 1. Find NOAA stations within range of sites [3. landing_site_data.py]
-1. Create & plot raster of data [4. interpolate_rasters.py]
-1. Extract wind & wave values at recovery sites (specific lat/long) [5. extract lat-long value.py]
-1. Timeseries plot of values [TBD]
-1. Forecast trend [TBD]
-1. Rank best splashdown site options [6. Rank sites.py]
+1. Plot data & map USCG force laydown relative to sites [4. site_evaluation.py]
 
 ## Background. NASA/SpaceX Site Criteria and Decision Gates.
-
 ### Splashdown requirements:
 
-Site:
+    Site:
     wind_speed < 15     # ft/sec
     period_height = wave_period != wave_height
     wave_slope < 7      # degrees
     rain_prob < 0.25    # % of 25 dBZ
     ligthning < 0.25    # % within 10 miles
 
-Helicopter Weather criteria:
+    Helicopter Weather criteria:
     vessel_PitchRoll <= 4    # degrees
     ceiling >= 500           # feet
-    visibility_day >= .5     # statute miles 
+    visibility_day >= .5     # statute miles
 
 #### Site Evaluation Decision Gates:
 
@@ -49,13 +62,14 @@ Helicopter Weather criteria:
         - crew undocks is marginal/No-Go
         - splashdown w/in 24 hours after
         - remain in orbit 24-48 hrs for landing attempt
-        
+
     6 hrs before splashdown
     1hr 20 mins before splashdown
-    
+
 ### Specific Learning Goals.
 1. Import & convert real-time data from web (wget)
 1. Batch process input folder & export result (Glob)
-1. Create raster image from lat/long values
-1. Extract values for different lat/long
-1. Plot, model & forecast
+1. Plot results based on decision criteria
+1. Create raster image from lat/long values (*attempted*)
+1. Extract values for different lat/long (*attempted*)
+1. Plot, model & forecast (*partially completed*")

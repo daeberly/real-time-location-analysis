@@ -85,6 +85,8 @@ for file in glob.glob(path):
 
 # Create master list [] of stations for wget to download
 stations = pd.read_csv('data_clean//latest_obs.csv', dtype=(str), usecols=[0])
+
+''' sample used for proof of concept '''
 stations = stations.sample(frac=.2)
 stations = stations['#STN'].to_list()
 

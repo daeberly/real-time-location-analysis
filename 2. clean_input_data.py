@@ -7,6 +7,8 @@
         # Note: merged dataframe is > 1.6 million records.
         # A 10% sample is used in this case study for proof of concept
 
+    # Note. All EPSG set to 3597 (Web Mercator)
+
 ## User-input:
     # Folder where to save cleaned data
         # data_clean/csv
@@ -183,7 +185,7 @@ fig,ax1 = plt.subplots(dpi=300, figsize=(12,12))
 print('\n buoys_all.crs: ', buoys_all.crs)
 buoys_all.plot(ax=ax1, edgecolors= 'black')
 plt.title('All NOAA Buoys')
-fig.savefig('CHECK_buoy_all.svg', format='svg')
+fig.savefig('2a_CHECK_buoy_all.svg', format='svg')
 
 
 # Export layer to geopackage 

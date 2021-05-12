@@ -21,11 +21,7 @@
         
 ## Next .py is 'Evaluation.py'
 
- To fix:
-    - Select weather reporting sites w/in 100nm of splashdown sites 
-    - Nice to clean up - join overlapping rings into one buffer
-        - Attemped on line 105 but can't set it to a coordinate reference system'
-    
+
 '''
     
 # Note: contextily & folium are not automatic Anaconda modules
@@ -34,7 +30,6 @@
     
 import pandas as pd
 import geopandas
-import fiona                # driver to read .kml format
 import matplotlib.pyplot as plt
 import contextily as ctx    # basemape for figure plots
 
@@ -43,7 +38,7 @@ import contextily as ctx    # basemape for figure plots
 # NASA/SpaceX splashdown sites
 #
 
-'''
+''' Attempt at converting .kml, CRS
 # .kml to GeoDataFrame
 geopandas.io.file.fiona.drvsupport.supported_drivers['KML'] = 'rw'
 sites = geopandas.read_file('splashdown_sites.kml', driver='KML')
@@ -65,21 +60,27 @@ sites = geopandas.GeoDataFrame(sites, geometry=geopandas.points_from_xy(sites.la
 sites = sites.set_index('Name')
 sites = sites.set_crs(epsg=3857, inplace= True) # EPSG:3857 for basemap
     # not having inplace= True killed me for hours! haha.
-sites.crs
+print('\nsites.crs: ',sites.crs)
 
 ## CHECK Start - plot results on a map
 
-# Plot results
+    # Basemap layer - U.S. States
+states = geopandas.read_file('cb_2018_us_state_500k.zip')
+
 fig,ax1 = plt.subplots(dpi=300, figsize=(12,12))
-print('\nsites.crs: ',sites.crs)
-sites.plot(ax=ax1, edgecolors='black')
 
-# Basemap options:
-#ctx.providers.keys()
-#ctx.providers.Esri.keys()
-ctx.add_basemap(ax=ax1, source=ctx.providers.Esri.OceanBasemap, zoom=10)
+    # Zoom into Continential US Area of Interest
+xlim = ([sites.total_bounds[0],  sites.total_bounds[2]])
+ylim = ([sites.total_bounds[1],  sites.total_bounds[3]])
 
-# Annotate Figure
+ax1.set_xlim(xlim)
+ax1.set_ylim(ylim)
+
+    # Stack layers
+sites.plot(ax=ax1, alpha= 0.9, facecolor='lightcoral', edgecolors= 'none', markersize=100)
+states.plot(ax=ax1, alpha= 0.2, facecolor='whitesmoke', edgecolors= 'grey', hatch= '///', markersize=50)
+
+    # Annotate Figure
 plt.title('NASA/SpaceX Splashdown Sites')
 # Label each lat/long point
 for x, y, label in zip(sites.geometry.x, sites.geometry.y, sites.index):
@@ -89,7 +90,7 @@ for x, y, label in zip(sites.geometry.x, sites.geometry.y, sites.index):
 # CHECK End
 
 # Export: 
-fig.savefig('CHECK_sites_shapefile.png', format='png')
+fig.savefig('3a_CHECK_sites_shapefile.png', format='png')
 sites.to_file('splash_down.gpkg', layer='NASA_sites', driver='GPKG')
 
 #%%
@@ -97,31 +98,38 @@ sites.to_file('splash_down.gpkg', layer='NASA_sites', driver='GPKG')
 # Create site buffer, buoy selection
 #
 
-''' fix units'''
-
 
 # Buffer: 2 degrees = 120 nautical miles (crs)
 sites.crs
 site_buffers = sites.buffer( 2 ) 
 site_buffers.crs
 site_buffers = site_buffers.to_crs(epsg=3857)
+print('\n site_buffers.crs: ',site_buffers.crs)
 
 
 ## CHECK Start - plot results on a map
 
 fig,ax1 = plt.subplots(dpi=300, figsize=(12,12))
-print('\n site_buffers.crs: ',site_buffers.crs)
 
-# Plot rings & sites
-site_buffers.plot(ax=ax1, color='grey', alpha= 0.6)
-sites.plot(ax=ax1, edgecolors='red')
-ctx.add_basemap(ax=ax1, source=ctx.providers.Esri.OceanBasemap, zoom=10)
+    # Zoom into Continential US Area of Interest
+xlim = ([site_buffers.total_bounds[0],  site_buffers.total_bounds[2]])
+ylim = ([site_buffers.total_bounds[1],  site_buffers.total_bounds[3]])
 
-## Annotate Figure
+ax1.set_xlim(xlim)
+ax1.set_ylim(ylim)
+
+    # Stack layers
+    # Plot rings & sites
+site_buffers.plot(ax=ax1, alpha= 0.2, facecolor='red', edgecolors= 'none', markersize=50 )
+sites.plot(ax=ax1, alpha= 0.9, facecolor='red', edgecolors= 'none', markersize=100)
+states.plot(ax=ax1, alpha= 0.2, facecolor='whitesmoke', edgecolors= 'grey', hatch= '///', markersize=50)
+
+    # Annotate Figure
 plt.title('NASA/SpaceX Splashdown Sites, buffer')
 for x, y, label in zip(sites.geometry.x, sites.geometry.y, sites.index):
     ax1.annotate(label, xy=(x, y), xytext=(3, 3), textcoords="offset points")    
-fig.savefig('CHECK_buoy_selection_rings.svg', format='svg')
+
+fig.savefig('3b_CHECK_buoy_selection_rings.svg', format='svg')
 
 ## CHECK End
 
@@ -136,40 +144,78 @@ site_buffers.to_file('splash_down.gpkg', layer='buoy_selection_rings', driver='G
 #
 
 # Import buoys from geopackage.
-points = geopandas.read_file('splash_down.gpkg', layer='buoys_all')
-points.crs
-points = points.to_crs(epsg=3857)
-    # CHECK 
-fig,ax1 = plt.subplots(dpi=300, figsize=(12,12))
-print('\n points.crs: ', points.crs)
-points.plot(ax=ax1, edgecolors= 'black')
+buoys = geopandas.read_file('splash_down.gpkg', layer='buoys_all')
+buoys.crs
+buoys = buoys.to_crs(epsg=3857)
+print('\n buoys.crs: ', buoys.crs)
 
-# Confirm buffers crs matches points.
+## CHECK Start - plot results on a map
+
+fig,ax1 = plt.subplots(dpi=300, figsize=(12,12))
+buoys.plot(ax=ax1, edgecolors= 'black')
+
+    # Confirm buffers crs matches points.
 site_buffers = geopandas.read_file('splash_down.gpkg', layer='buoy_selection_rings')
 site_buffers.crs
 site_buffers = site_buffers.to_crs(epsg=3857)
 
-# CHECK: plot both together
+    # CHECK: plot both together
 fig,ax1 = plt.subplots(dpi=300, figsize=(12,12))
 plt.title('All NOAA Buoys & NASA Site range rings (red)')
-points.plot(ax=ax1, facecolor='none', edgecolors= 'black', markersize=5)
-site_buffers.plot(ax=ax1, alpha= 0.2, facecolor='red', edgecolors= 'none', markersize=50 )
-fig.savefig('CHECK_buoys_&_selection_rings.svg', format='svg')
 
-#%%
+    # Zoom into Continential US Area of Interest
+xlim = ([site_buffers.total_bounds[0],  site_buffers.total_bounds[2]])
+ylim = ([site_buffers.total_bounds[1],  site_buffers.total_bounds[3]])
+
+ax1.set_xlim(xlim)
+ax1.set_ylim(ylim)
+
+    # Stack layers
+buoys.plot(ax=ax1, facecolor='none', edgecolors= 'black', markersize=5)
+sites.plot(ax=ax1, alpha= 0.9, facecolor='red', edgecolors= 'none', markersize=100)
+states.plot(ax=ax1, alpha= 0.2, facecolor='whitesmoke', edgecolors= 'grey', hatch= '///', markersize=50)
+site_buffers.plot(ax=ax1, alpha= 0.1, facecolor='red', edgecolors= 'none', markersize=50 )
+
+    # Annotate Figure
+plt.title('NASA/SpaceX Splashdown Sites, buffer')
+for x, y, label in zip(sites.geometry.x, sites.geometry.y, sites.index):
+    ax1.annotate(label, xy=(x, y), xytext=(3, 3), textcoords="offset points")    
+    
+fig.savefig('3c_CHECK_buoys_&_selection_rings.svg', format='svg')
+
+## CHECK End
 #
 # Select buoys within buffers
 #
 
 in_buffer = geopandas.overlay(site_buffers, points, how='intersection', keep_geom_type=False)
    # Ref: https://geopandas.org/docs/user_guide/set_operations.html
-   
-# CHECK: selection & buffers plot both together
+
+print('\nNOAA Stations near Splashdown Sites:\n', in_buffer.count())
+
+# CHECK Start - plot results on a map
+
 fig,ax1 = plt.subplots(dpi=300, figsize=(12,12))
 plt.title('NOAA Buoys in NASA Site range rings (red)')
+
+    # Zoom into Continential US Area of Interest
+xlim = ([site_buffers.total_bounds[0],  site_buffers.total_bounds[2]])
+ylim = ([site_buffers.total_bounds[1],  site_buffers.total_bounds[3]])
+
+ax1.set_xlim(xlim)
+ax1.set_ylim(ylim)
+
+    # Stack layers
+    # Plot rings & sites
 in_buffer.plot(ax=ax1, facecolor='none', edgecolors= 'black', markersize=5)
-site_buffers.plot(ax=ax1, alpha= 0.2, facecolor='red', edgecolors= 'none', markersize=50 )
-fig.savefig('CHECK_buoys_inBuffer.svg', format='svg')
+sites.plot(ax=ax1, alpha= 0.9, facecolor='red', edgecolors= 'none', markersize=100)
+states.plot(ax=ax1, alpha= 0.2, facecolor='whitesmoke', edgecolors= 'grey', hatch= '///', markersize=50)
+site_buffers.plot(ax=ax1, alpha= 0.1, facecolor='red', edgecolors= 'none', markersize=50 )
+
+
+fig.savefig('3d_CHECK_buoys_inBuffer.svg', format='svg')
+
+## CHECK End
 
 # Export: add new layer to geopackage 
 in_buffer.to_file('splash_down.gpkg', layer='nearby_wx_stations', driver='GPKG')
