@@ -7,7 +7,7 @@ Link to presentation: https://github.com/daeberly/real-time-location-analysis/bl
 #### A special thanks to: Professor Peter Wilcoxen at Syracuse University for assistance in development of this PAI 789 Advanced Policy Analysis capstone project.
 
 ## Purpose.
-This project provides a hands-off repeated, auditable, and accurate framework to pull large volumes of web data, batch process and manipulate it before analysis. No external programs (QGIS or ArcGIS) are used for analysis or plotting; only python coding, associated modules and embedded methods. Only three user inputs are required, after that it can rerun the analysis repeated with no interaction by the user. 
+This project provides a hands-off repeated, auditable, and accurate frameworks to pull large volumes of web data, batch process and manipulate it, analyze then plot results. No external programs (QGIS or ArcGIS) are used for analysis or plotting; only python coding, associated modules and embedded methods. Only three user inputs are required, after that it can rerun the analysis repeated with no interaction by the user. 
 
 ### Use Case.
 Here, we determine NASA/SpaceX splashdown site viability with 10 minute weather updates that include the previous 72 hours. NASA re-evaluates all landing sites multiple times before splashdown, the latest 1 hour and 20 minutes before arrival. This tool helps NASA as well as U.S. Coast Guard command centers whom must identify the best unit to respond, as the USCG is charged with protecting the public, NASA's astronauts and its high-valued capsule.
@@ -17,7 +17,7 @@ Here, we determine NASA/SpaceX splashdown site viability with 10 minute weather 
     1-2 days priority
     6 hours before undocking
     2.5 hours before undocking
-        - crew undocks is marginal/No-Go
+        - crew undocks if sites are marginal/No-Go
         - splashdown w/in 24 hours after
         - remain in orbit 24-48 hrs for landing attempt
 
@@ -46,10 +46,19 @@ Here, we determine NASA/SpaceX splashdown site viability with 10 minute weather 
 1. U.S. Coast Guard units with latitude, longitude and asset transit speed.
 
 ### Overall Flow. Parts...
-1. Download data from web [1. get_web_data.py]
-1. Combine data into dataframe [2. clean_input_data.py]
-1. Find NOAA stations within range of sites [3. landing_site_data.py]
-1. Plot data & map USCG force laydown relative to sites [4. site_evaluation.py]
+1. Download data from web [1. get_web_data.py] <br /> 
+  *Inputs: (1) Supply url, (2) Folder where to save web files & (3) File types of interest (i.e. .txt, .spec)*
+3. Combine data into dataframe [2. clean_input_data.py] <br />
+  *Inputs: (1) Folder where to save cleaned data [//data_clean/csv & //data_clean/spec] & (2) File types of interest (i.e. .txt, .spec)*
+1. Find NOAA stations within range of sites [3. landing_site_data.py] <br />
+  *Inputs: (1) NASA splashdown sites (NASA_sites.csv) & (2) File types of interest (i.e. .txt, .spec)*
+3. Plot data & map USCG force laydown relative to sites [4. site_evaluation.py] <br />
+  *Inputs: (1) Location of U.S. Coast Guard units & asset capabilites (CG_units.csv)*
+   <br />
+   <br />
+   Other Inputs: .pkl and .gpgk files <br />
+   *These files are outputs from parts 1-4 and used as running repositories of data & shapefiles for consolidated data management and export if necessary.*
+  
 
 ## Processing and Location Analysis
 The code pulls real-time and historical data from the active NOAA weather stations world-wide(total 801), batch processes two data files (.txt and .spec) per station (1.6 million records) from an input folder and plot splashdown sites. 
