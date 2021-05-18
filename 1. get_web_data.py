@@ -79,9 +79,6 @@ for file in glob.glob(path):
     # general info "'station id'.txt" (i.e. time, wind, swells)
     # wave specifics "'station id'.spec" (i.e. wave height, steepness, period)
     
-#
-# Download all 'general info .txt' files in repository
-#
 
 # Create master list [] of stations for wget to download
 stations = pd.read_csv('data_clean//latest_obs.csv', dtype=(str), usecols=[0])
@@ -90,6 +87,11 @@ stations = pd.read_csv('data_clean//latest_obs.csv', dtype=(str), usecols=[0])
 stations = stations.sample(frac=.2)
 stations = stations['#STN'].to_list()
 
+#%%
+
+#
+# Download all 'general info .txt' files in repository
+#
 no_csv_data = []
 
 for station in stations:
@@ -109,6 +111,8 @@ print('\n Stations missing .csv files:', len(no_csv_data))
 missing_csv = pd.DataFrame(no_csv_data)
 missing_csv = missing_csv.rename({0:'station_id'}, axis= 'columns')
 missing_csv.to_csv('stations_missing_.csv', index=False)
+
+#%%
 
 #
 # Download all 'wave specific info .spec' files in repository

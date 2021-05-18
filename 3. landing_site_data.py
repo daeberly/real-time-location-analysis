@@ -31,6 +31,7 @@
 import pandas as pd
 import geopandas
 import matplotlib.pyplot as plt
+import fiona
 
 #%%
 #
@@ -110,7 +111,8 @@ print('\n site_buffers.crs: ',site_buffers.crs)
 
 fig,ax1 = plt.subplots(dpi=300, figsize=(12,12))
 
-    # Zoom into Continential US Area of Interest
+    # Auto zoom into Continential US Area of Interest
+        # uses the 'bounds' or extent of the site_buffers' layer
 xlim = ([site_buffers.total_bounds[0],  site_buffers.total_bounds[2]])
 ylim = ([site_buffers.total_bounds[1],  site_buffers.total_bounds[3]])
 
@@ -141,6 +143,7 @@ site_buffers.to_file('splash_down.gpkg', layer='buoy_selection_rings', driver='G
 #
 # Select NOAA buoys within buffers
 #
+
 
 # Import buoys from geopackage.
 buoys = geopandas.read_file('splash_down.gpkg', layer='buoys_all')
@@ -183,11 +186,13 @@ for x, y, label in zip(sites.geometry.x, sites.geometry.y, sites.index):
 fig.savefig('3c_CHECK_buoys_&_selection_rings.png', format='png')
 
 ## CHECK End
+
+#%%
 #
 # Select buoys within buffers
 #
 
-in_buffer = geopandas.overlay(site_buffers, points, how='intersection', keep_geom_type=False)
+in_buffer = geopandas.overlay(site_buffers, buoys, how='intersection', keep_geom_type=False)
    # Ref: https://geopandas.org/docs/user_guide/set_operations.html
 
 print('\nNOAA Stations near Splashdown Sites:\n', in_buffer.count())
@@ -220,4 +225,13 @@ fig.savefig('3d_CHECK_buoys_inBuffer.svg', format='svg')
 in_buffer.to_file('splash_down.gpkg', layer='nearby_wx_stations', driver='GPKG')
 in_buffer.columns
 
+#%%
+
+# List all layers within a geopackage
+for layername in fiona.listlayers('splash_down.gpkg'):
+    with fiona.open('splash_down.gpkg', layer=layername) as src:
+        print('layer name:', layername, '|| records:', len(src))
+        
+    # Ref: https://fiona.readthedocs.io/en/latest/README.html#reading-multilayer-data
+    
 print('\n .py Complete')

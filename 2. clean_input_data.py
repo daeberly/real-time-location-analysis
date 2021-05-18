@@ -199,8 +199,8 @@ buoys_all.to_file('splash_down.gpkg', layer='buoys_all', driver='GPKG')
 
 # Ensure merge column data types are the same
 print('\nbuoy_data:\n', buoy_data.dtypes)
-print('\nspec_data:\n', buoy_data.dtypes)
-print('\nbuoys:\n', buoy_data.dtypes)
+print('\nspec_data:\n', spec_data.dtypes)
+print('\nbuoys:\n', buoys_all.dtypes)
 convert_type = {'station_id':str}
 buoy_data = buoy_data.astype(convert_type)
 buoy_data.dtypes

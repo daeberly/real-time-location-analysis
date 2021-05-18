@@ -6,8 +6,17 @@ import pandas as pd
 import geopandas
 import matplotlib.pyplot as plt
 import seaborn as sns
+import fiona
 
+#%%
 
+# List all layers within a geopackage
+for layername in fiona.listlayers('splash_down.gpkg'):
+    with fiona.open('splash_down.gpkg', layer=layername) as src:
+        print('layer name:', layername, '|| records:', len(src))
+        
+    # Ref: https://fiona.readthedocs.io/en/latest/README.html#reading-multilayer-data
+    
 #%%%
 
 #
