@@ -31,13 +31,14 @@ per_site = nearby.value_counts('Name')
 # Plot Bar Chart
 
 fig, ax1 = plt.subplots(dpi=300)
+fig.subplots_adjust(left=0.25)
 ax = per_site.plot.barh()
 ax.set_ylabel('Splashdown Site')
 ax.set_xlabel('NOAA Stations within 120nm')
 ax.set_title('Nearby Active NOAA Weather Stations')
 ax.tick_params(axis='y', rotation= 40)
 
-fig.savefig('4a_WxStations_per_site.png', format='png')
+fig.savefig('4a_WxStations_per_site.svg', format='svg')
 
 
 
