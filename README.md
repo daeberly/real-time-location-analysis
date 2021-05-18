@@ -54,6 +54,11 @@ Here, we determine NASA/SpaceX splashdown site viability with 10 minute weather 
   *Inputs: (1) NASA splashdown sites (NASA_sites.csv) & (2) File types of interest (i.e. .txt, .spec)*
 3. Plot data & map USCG force laydown relative to sites [4. site_evaluation.py] <br />
   *Inputs: (1) Location of U.S. Coast Guard units & asset capabilites (CG_units.csv)*
+   <br />
+   <br />
+   Other Inputs: .pkl and .gpgk files <br />
+   *These files are outputs from parts 1-4 and used as running repositories of data & shapefiles for consolidated data management and export if necessary.*
+  
 
 ## Processing and Location Analysis
 The code pulls real-time and historical data from the active NOAA weather stations world-wide(total 801), batch processes two data files (.txt and .spec) per station (1.6 million records) from an input folder and plot splashdown sites. 
