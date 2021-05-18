@@ -51,7 +51,7 @@ Here, we determine NASA/SpaceX splashdown site viability with 10 minute weather 
 3. Combine data into dataframe [2. clean_input_data.py] <br />
   *Inputs: (1) Folder where to save cleaned data [//data_clean/csv & //data_clean/spec] & (2) File types of interest (i.e. .txt, .spec)*
 1. Find NOAA stations within range of sites [3. landing_site_data.py] <br />
-  *Inputs: (1) Landing sites as .csv & (2) File types of interest (i.e. .txt, .spec)*
+  *Inputs: (1) NASA splashdown sites (NASA_sites.csv) & (2) File types of interest (i.e. .txt, .spec)*
 3. Plot data & map USCG force laydown relative to sites [4. site_evaluation.py] <br />
   *Inputs: (1) Location of U.S. Coast Guard units & asset capabilites (CG_units.csv)*
 
