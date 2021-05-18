@@ -79,7 +79,10 @@ This is the workhorse of the program. Without clean, accurate and relevant data 
 
 Here, we apply a 120nm buffer around splashdown sites to select nearby NOAA reporting stations (Figure 2.).
 ![](https://github.com/daeberly/real-time-location-analysis/blob/main/Outputs/3c_CHECK_buoys_%26_selection_rings.svg)
-*Figure 2. NOAA weather reporting stations near Space X Splashdown Sites.*
+*Figure 2a. NOAA weather reporting stations near Space X Splashdown Sites.*
+
+![](https://github.com/daeberly/real-time-location-analysis/blob/main/Outputs/4a_WxStations_per_site.svg) <br />
+*Figure 2b. Number of NOAA stations per Space X Splashdown Sites.*
 
 Once NOAA stations are identified, they are georeferenced, and plotted the results against the weather criteria. As a proof of concept, we only look at current wind speed and wave height as well as changes over time per station (Figure 3)
 ![](https://github.com/daeberly/real-time-location-analysis/blob/main/Outputs/4b_wind_byLocation_violinplot.png)
