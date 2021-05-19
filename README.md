@@ -67,6 +67,14 @@ The code pulls real-time and historical data from the active NOAA weather statio
 - Download data from web [1. get_web_data.py]
 - Combine data into dataframe [2. clean_input_data.py]
 
+#### Folder Directory Setup.
+Within the working directory containing .py files include these folders:
+-   data_raw (folder)  <br />
+        .spec (subfolder)
+-   data_clean (folder) <br />
+       .csv (subfolder) <br />
+      .spec (subfolder)
+
 This is the workhorse of the program. Without clean, accurate and relevant data this program is useless. Python coding allows us to ensure credibility and trust in the data acquisition and manipulation. 
 
 ![](https://github.com/daeberly/real-time-location-analysis/blob/main/Outputs/overall_flow.jpg)
