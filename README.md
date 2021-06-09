@@ -7,10 +7,10 @@ Link to presentation: https://github.com/daeberly/real-time-location-analysis/bl
 #### A special thanks to: Professor Peter Wilcoxen at Syracuse University for assistance in development of this PAI 789 Advanced Policy Analysis capstone project.
 
 ## Purpose.
-This project provides a hands-off repeated, auditable, and accurate frameworks to pull large volumes of web data, batch process and manipulate it, analyze then plot results. No external programs (QGIS or ArcGIS) are used for analysis or plotting; only python coding, associated modules and embedded methods. Only three user inputs are required, after that it can rerun the analysis repeated with no interaction by the user. 
+This code provides a repeated, auditable, and accurate framework. It pulls large volumes of web data (>1 million NOAA buoy records), batch processes the data, analyzes it then plot results. No external programs (QGIS or ArcGIS) are used for analysis or plotting; only python coding, associated modules and their embedded methods. Three user inputs are required - NASA landing site locations, NASA location weather criteria, and USCG unit locations. After that is added, it can rerun the analysis repeated with no interaction by the user. 
 
 ### Use Case.
-Here, we determine NASA/SpaceX splashdown site viability with 10 minute weather updates that include the previous 72 hours. NASA re-evaluates all landing sites multiple times before splashdown, the latest 1 hour and 20 minutes before arrival. This tool helps NASA as well as U.S. Coast Guard command centers whom must identify the best unit to respond, as the USCG is charged with protecting the public, NASA's astronauts and its high-valued capsule.
+Here, we examine which NASA/SpaceX splashdown sites are viability to identify the one or many US Coast Guard small boat stations that may need to respond. Weather data derived from NOAA buoys that update every 10 minute weather and include records from the previous 72 hours. NASA re-evaluates all landing sites multiple times before splashdown, the last site verification is 1 hour and 20 minutes before arrival. This tool helps NASA as well as U.S. Coast Guard command centers whom must identify the best unit to respond, as the USCG is charged with protecting the public, NASA's astronauts and its high-valued capsule.
 
 #### Site Evaluation Decision Gates:
 
@@ -41,7 +41,7 @@ Here, we determine NASA/SpaceX splashdown site viability with 10 minute weather 
 #### User-defined inputs.
 1. SpaceX splashdown site with latitude & longitude.
 1. URL for NOAA weather reports
-1. Desired radius (120nm) from each site for selecting NOAA reporting stations
+1. Desired radius (120nm) from each site to select nearest NOAA reporting stations
 1. Weather criteria
 1. U.S. Coast Guard units with latitude, longitude and asset transit speed.
 
@@ -98,7 +98,7 @@ Once NOAA stations are identified, they are georeferenced, and plotted the resul
 
 The U.S. Coast Guard is charged with protecting the capsule upon arrival, establishing a security boundary and providing search and rescue. With each site around 12nm from shore this poses a capacity and capabilities challenge. For the U.S.Coast Guard, nearby small boat station one-hour transit ranges are plotted against splashdown sites and the U.S. 12nm territorial sea boundary (Figure 4). Only within the territorial seas is the U.S., by regulation the U.S.Coast Guard, authorize to establish and maintain a security boundary. Outside of 12nm, U.S. sovereignty ends and under the United Nations Commission on the Law of the Sea (UNCLOS) with respect to security zones.
 
-It is important to note, all splashdown sites are within a one-hour transit of USCG small boat stations and outside the 12nm territorial sea boundary. 
+*It is important to note, all splashdown sites are within a one-hour transit of USCG small boat stations and outside the 12nm territorial sea boundary.* 
 
 ![](https://github.com/daeberly/real-time-location-analysis/blob/main/Outputs/4g_SpaceXsites_vs-USCG.svg)
 *Figure 4. Space X Splashdown Sites within 1-hour range of USCG small boat stations.*
